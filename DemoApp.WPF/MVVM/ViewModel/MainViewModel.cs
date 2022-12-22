@@ -38,7 +38,7 @@ public class MainViewModel : ViewModelBase
 
 	public MainViewModel()
 	{
-		var user = new UserAccountModel();
+		_userRepository = new UserRepository();
 		CurrentUserAccount = new();
 		LoadCurrentUserData();		
 	}

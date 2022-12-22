@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="DemoDb.db" />
     <None Remove="Images\back-image.jpg" />
     <None Remove="Images\key-icon.png" />
     <None Remove="Images\logo.png" />
@@ -16,9 +17,13 @@
 
   <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.117" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="DemoDb.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\back-image.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 
 namespace DemoApp.WPF.Repositories;
 
@@ -7,13 +7,17 @@ public abstract class RepositoryBase
 {
     private readonly String _connectionString;
 
-	protected SqlConnection GetConnection()
+	protected SQLiteConnection GetConnection()
 	{
-		return new SqlConnection(_connectionString);
+		return new SQLiteConnection(_connectionString, true);
 	}
 
 	public RepositoryBase()
 	{
-		_connectionString = "Server=(local); Database=MVVMLoginDb; Integrated Security=true";
+		_connectionString = new SQLiteConnectionStringBuilder
+		{
+			DataSource = ".\\DemoDb.db",
+			Version = 3			
+		}.ConnectionString;
 	}
 }

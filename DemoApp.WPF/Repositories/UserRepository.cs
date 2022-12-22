@@ -1,12 +1,8 @@
 ﻿using DemoApp.WPF.MVVM.Model;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
+using System.Data.SQLite;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DemoApp.WPF.Repositories;
 public class UserRepository : RepositoryBase, IUserRepository
@@ -21,14 +17,16 @@ public class UserRepository : RepositoryBase, IUserRepository
         Boolean validUser;
 
         using (var connection = GetConnection())
-        using (var command = new SqlCommand())
+        using (var command = new SQLiteCommand())
         {
             connection.Open();
             command.Connection = connection;
-            command.CommandText = "select * from [User] where username = @username and [password] = @password";
-            command.Parameters.Add("@username", SqlDbType.NVarChar).Value = credential.UserName;
-            command.Parameters.Add("@password", SqlDbType.NVarChar).Value =credential.Password;
-            validUser = command.ExecuteScalar == null ? false : true;
+            command.CommandText = "select * from User where username = @username and password = @password";
+            command.Parameters.Add(new SQLiteParameter("@username", credential.UserName));
+            command.Parameters.Add(new SQLiteParameter("@password", credential.Password));
+            var result = command.ExecuteNonQuery();
+
+            validUser = result == 0 ? false : true;
         }
 
         return validUser;
@@ -54,12 +52,12 @@ public class UserRepository : RepositoryBase, IUserRepository
         UserModel user = null;
 
         using (var connection = GetConnection())
-        using (var command = new SqlCommand())
+        using (var command = new SQLiteCommand())
         {
             connection.Open();
             command.Connection = connection;
-            command.CommandText = "select * from [User] where username = @username";
-            command.Parameters.Add("@username", SqlDbType.NVarChar).Value = username;          
+            command.CommandText = "select * from User where username = @username";
+            command.Parameters.Add(new SQLiteParameter("@username", username));          
             using (var reader = command.ExecuteReader())
             {
                 if(reader.Read())
@@ -77,7 +75,7 @@ public class UserRepository : RepositoryBase, IUserRepository
             }
         }
 
-        return validUser;
+        return user;
     }
 
     public void Remove(int id)
