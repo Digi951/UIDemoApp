@@ -28,4 +28,20 @@ public partial class MainView : Window
     {
         this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
     }
+
+    private void btnClose_Click(object sender, RoutedEventArgs e)
+    {
+        Application.Current.Shutdown();
+    }
+
+    private void btn_MaximizeClick(object sender, RoutedEventArgs e)
+    {
+        this.WindowState = this.WindowState == WindowState.Normal 
+                                        ? WindowState.Maximized 
+                                        : WindowState.Normal;
+    }
+    private void btnMinimize_Click(object sender, RoutedEventArgs e)
+    {
+        this.WindowState = WindowState.Minimized;
+    }
 }
